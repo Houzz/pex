@@ -316,7 +316,7 @@ class PEXBuilder(object):
       for k in range(1, len(split_path)):
         sub_path = os.path.sep.join(split_path[0:k] + ['__init__.py'])
         if sub_path not in relative_digest and sub_path not in init_digest:
-          import_string = "__import__('pkg_resources').declare_namespace(__name__)"
+          import_string = "from pkgutil import extend_path" +b'\n'+ "__path__ = extend_path(__path__, __name__)"            
           try:
             self._chroot.write(import_string, sub_path)
           except TypeError:
